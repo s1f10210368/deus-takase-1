@@ -8,19 +8,34 @@ generator client {
 }
 
 model User {
-  id        String   @id
-  email     String
-  name      String
-  createdAt DateTime
-  tasks     Task[]
+  id    String @id @default(uuid())
+  email String @unique
+  name  String
+  posts Post[]
 }
 
-model Task {
-  id        String   @id
-  label     String
-  done      Boolean
-  imageKey  String?
-  createdAt DateTime
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String
+model Post {
+  id          Int          @id @default(autoincrement())
+  title       String
+  content     String?
+  published   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    String
+  categories  Category[]
+  attachments Attachment[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+}
+
+model Attachment {
+  id     Int    @id @default(autoincrement())
+  url    String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId Int
 }
