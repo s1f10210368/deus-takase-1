@@ -10,6 +10,7 @@ const CategoriesPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       addLoading();
+      // APIクライアントの型定義に合わせて修正
       const res = await apiClient.private.categories.$get();
       setCategories(res.map((category) => category.name));
       removeLoading();
