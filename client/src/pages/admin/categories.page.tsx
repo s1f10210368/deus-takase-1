@@ -16,7 +16,7 @@ const CategoriesPage = () => {
     };
 
     fetchCategories();
-  }, []);
+  }, [addLoading, removeLoading]);
 
   const handleNewCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCategory(e.target.value);
 
