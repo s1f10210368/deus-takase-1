@@ -8,34 +8,22 @@ generator client {
 }
 
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  name  String
-  posts Post[]
+  id               String    @id @default(uuid())
+  email            String    @unique
+  name             String
+  messagesSent     Message[] @relation("sender")
+  messagesReceived Message[] @relation("recipient")
 }
 
-model Post {
-  id          Int          @id @default(autoincrement())
-  title       String
+model Message {
+  id          String   @id @default(uuid())
   content     String?
-  published   Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  author      User         @relation(fields: [authorId], references: [id])
-  authorId    String
-  categories  Category[]
-  attachments Attachment[]
-}
-
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  posts Post[]
-}
-
-model Attachment {
-  id     Int    @id @default(autoincrement())
-  url    String
-  post   Post   @relation(fields: [postId], references: [id])
-  postId Int
+  imageUrl    String?
+  videoUrl    String?
+  stampUrl    String?
+  createdAt   DateTime @default(now())
+  senderId    String
+  recipientId String
+  sender      User     @relation("sender", fields: [senderId], references: [id])
+  recipient   User     @relation("recipient", fields: [recipientId], references: [id])
 }
