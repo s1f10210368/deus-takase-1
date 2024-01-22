@@ -1,17 +1,23 @@
 /* eslint-disable */
-export type User = {
-  id: string
-  email: string
-  name: string
+export type Channel = {
+  id?: string | undefined
+  name?: string | undefined
+  description?: string | undefined
+  createdAt?: string | undefined
 }
 
 export type Message = {
-  id: string
+  id?: string | undefined
   content?: string | undefined
-  imageUrl?: string | undefined
-  videoUrl?: string | undefined
-  stampUrl?: string | undefined
-  createdAt: string
-  senderId: string
-  recipientId: string
+  createdAt?: string | undefined
+  senderId?: string | undefined
+  channelId?: string | undefined
+}
+
+export type DirectMessage = {
+  id?: string | undefined
+  content?: string | undefined
+  createdAt?: string | undefined
+  senderId?: string | undefined
+  receiverId?: string | undefined
 }
