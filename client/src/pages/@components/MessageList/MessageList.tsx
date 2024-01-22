@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from 'src/utils/apiClient';
 import { useInterval } from 'src/utils/useInterval';
 import type { Message } from '$/api/@types';
@@ -6,10 +6,10 @@ import type { Message } from '$/api/@types';
 export const MessageList = ({ channelId }: { channelId: string }) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     const res = await apiClient.private.channels._channelId(channelId).messages.$get();
     setMessages(res);
-  };
+  }, [channelId]);
 
   useEffect(() => {
     fetchMessages();
