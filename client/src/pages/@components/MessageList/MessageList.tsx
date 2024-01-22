@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from 'src/utils/apiClient';
 import { useInterval } from 'src/utils/useInterval';
+import type { Message } from '$/api/@types';
 
-export const MessageList = ({ recipientId }: { recipientId: string }) => {
-  const [messages, setMessages] = useState([]);
+export const MessageList = ({ channelId }: { channelId: string }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const fetchMessages = async () => {
-    // ここでメッセージを取得するAPIを呼び出す
-    // 今回はサンプルとして空の配列を設定
-    setMessages([]);
+    const res = await apiClient.private.channels._channelId(channelId).messages.$get();
+    setMessages(res);
   };
 
   useEffect(() => {
     fetchMessages();
-  }, [recipientId]);
+  }, [channelId]);
 
-  // メッセージを定期的にポーリングする
   useInterval(() => {
     fetchMessages();
-  }, 3000); // 3秒ごとにポーリング
+  }, 3000);
 
   return (
     <div>
