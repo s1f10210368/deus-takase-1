@@ -8,22 +8,63 @@ generator client {
 }
 
 model User {
-  id               String    @id @default(uuid())
-  email            String    @unique
-  name             String
-  messagesSent     Message[] @relation("sender")
-  messagesReceived Message[] @relation("recipient")
+  id                     String              @id @default(uuid())
+  email                  String              @unique
+  name                   String
+  messagesSent           Message[]           @relation("UserMessagesSent")
+  messagesReceived       Message[]           @relation("UserMessagesReceived")
+  channels               ChannelMembership[]
+  directMessagesSent     DirectMessage[]     @relation("DirectMessageSender")
+  directMessagesReceived DirectMessage[]     @relation("DirectMessageReceiver")
 }
 
 model Message {
-  id          String   @id @default(uuid())
-  content     String?
-  imageUrl    String?
-  videoUrl    String?
-  stampUrl    String?
-  createdAt   DateTime @default(now())
-  senderId    String
-  recipientId String
-  sender      User     @relation("sender", fields: [senderId], references: [id])
-  recipient   User     @relation("recipient", fields: [recipientId], references: [id])
+  id         String   @id @default(uuid())
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  senderId   String
+  channelId  String?
+  receiverId String?
+  sender     User     @relation("UserMessagesSent", fields: [senderId], references: [id])
+  channel    Channel? @relation(fields: [channelId], references: [id])
+  receiver   User?    @relation("UserMessagesReceived", fields: [receiverId], references: [id])
+}
+
+model Channel {
+  id                 String              @id @default(uuid())
+  name               String
+  description        String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  messages           Message[]
+  channelMemberships ChannelMembership[]
+}
+
+model ChannelMembership {
+  id        String   @id @default(uuid())
+  userId    String
+  channelId String
+  role      UserRole @default(MEMBER)
+  user      User     @relation(fields: [userId], references: [id])
+  channel   Channel  @relation(fields: [channelId], references: [id])
+
+  @@unique([userId, channelId])
+}
+
+model DirectMessage {
+  id         String   @id @default(uuid())
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  senderId   String
+  receiverId String
+  sender     User     @relation("DirectMessageSender", fields: [senderId], references: [id])
+  receiver   User     @relation("DirectMessageReceiver", fields: [receiverId], references: [id])
+}
+
+enum UserRole {
+  ADMIN
+  MEMBER
+  GUEST
 }
