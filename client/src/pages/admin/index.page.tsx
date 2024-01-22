@@ -21,7 +21,6 @@ const AdminPage = () => {
   const handleSubmit = async () => {
     addLoading();
     try {
-      // APIクライアントの型定義に合わせて修正
       await apiClient.private.posts.$post({
         body: { title, content, categories }
       });
