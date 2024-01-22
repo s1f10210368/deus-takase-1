@@ -13,7 +13,7 @@ export const MessageList = ({ channelId }: { channelId: string }) => {
 
   useEffect(() => {
     fetchMessages();
-  }, [channelId]);
+  }, [channelId, fetchMessages]);
 
   useInterval(() => {
     fetchMessages();
