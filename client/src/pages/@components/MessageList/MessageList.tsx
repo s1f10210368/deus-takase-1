@@ -7,7 +7,7 @@ export const MessageList = ({ channelId }: { channelId: string }) => {
   const [messages, setMessages] = useState<TaskModel[]>([]);
 
   const fetchMessages = useCallback(async () => {
-    const res = await apiClient.private.tasks.$get();
+    const res = await apiClient.public.tasks.$get();
     setMessages(res);
   }, []);
 
