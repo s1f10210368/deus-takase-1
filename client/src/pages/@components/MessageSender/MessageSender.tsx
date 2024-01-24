@@ -6,7 +6,7 @@ export const MessageSender = ({ channelId }: { channelId: string }) => {
 
   const sendMessage = async () => {
     if (!content.trim()) return;
-    await apiClient.private.channels._channelId(channelId).messages.$post({ body: { content } });
+    await apiClient.private.tasks.$post({ body: { label: content } });
     setContent('');
   };
 

@@ -1,19 +1,19 @@
 import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from 'src/utils/apiClient';
 import { useInterval } from 'src/utils/useInterval';
-import type { Message } from '$/api/@types';
+import type { TaskModel } from '$/api/@types/models';
 
 export const MessageList = ({ channelId }: { channelId: string }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<TaskModel[]>([]);
 
   const fetchMessages = useCallback(async () => {
-    const res = await apiClient.private.channels._channelId(channelId).messages.$get();
+    const res = await apiClient.private.tasks.$get();
     setMessages(res);
-  }, [channelId]);
+  }, []);
 
   useEffect(() => {
     fetchMessages();
-  }, [channelId, fetchMessages]);
+  }, [fetchMessages]);
 
   useInterval(() => {
     fetchMessages();
@@ -22,7 +22,7 @@ export const MessageList = ({ channelId }: { channelId: string }) => {
   return (
     <div>
       {messages.map((message) => (
-        <div key={message.id}>{message.content}</div>
+        <div key={message.id}>{message.label}</div>
       ))}
     </div>
   );
