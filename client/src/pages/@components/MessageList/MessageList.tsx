@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from 'react';
+import type { TaskModel } from '$/api/@types/models';
+import { useCallback, useEffect, useState } from 'react';
 import { apiClient } from 'src/utils/apiClient';
 import { useInterval } from 'src/utils/useInterval';
-import type { TaskModel } from '$/api/@types/models';
 
 export const MessageList = ({ channelId }: { channelId: string }) => {
   const [messages, setMessages] = useState<TaskModel[]>([]);

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { apiClient } from 'src/utils/apiClient';
+import { useEffect, useState } from 'react';
 import { useLoading } from 'src/pages/@hooks/useLoading';
+import { apiClient } from 'src/utils/apiClient';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState<string[]>([]);
@@ -18,13 +18,14 @@ const CategoriesPage = () => {
     fetchCategories();
   }, [addLoading, removeLoading]);
 
-  const handleNewCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCategory(e.target.value);
+  const handleNewCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewCategory(e.target.value);
 
   const handleAddCategory = async () => {
     addLoading();
     try {
       await apiClient.private.categories.$post({
-        body: { name: newCategory }
+        body: { name: newCategory },
       });
       setCategories([...categories, newCategory]);
       setNewCategory('');
@@ -40,7 +41,12 @@ const CategoriesPage = () => {
     <div>
       <h1>Categories</h1>
       <div>
-        <input type='text' value={newCategory} onChange={handleNewCategoryChange} placeholder='New Category' />
+        <input
+          type="text"
+          value={newCategory}
+          onChange={handleNewCategoryChange}
+          placeholder="New Category"
+        />
         <button onClick={handleAddCategory}>Add</button>
       </div>
       <ul>
